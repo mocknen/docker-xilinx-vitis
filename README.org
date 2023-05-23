@@ -1,0 +1,63 @@
+* Dockerfile Example for Xilinx Vitis 2022.2.2
+** Prerequisites
+   Required files to build the image are:
+
+   - =Xilinx_Unified_2022.2_1014_8888.tar.gz=
+   - =Xilinx_Vivado_Vitis_Update_2022.2.1_1208_2036.tar.gz=
+   - =Xilinx_Vivado_Vitis_Update_2022.2.2_0221_2201.tar.gz=
+
+
+   Download the above files from the [[https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/vivado-design-tools/2022-2.html][Xilinx web page]] and save them in a directory named [[./context/][context]].
+
+   After that, the output of the ls command should look like the following:
+   #+begin_src bash
+     ls context
+   #+end_src
+   #+begin_example
+     Xilinx_Unified_2022.2_1014_8888.tar.gz
+     Xilinx_Vivado_Vitis_Update_2022.2.1_1208_2036.tar.gz
+     Xilinx_Vivado_Vitis_Update_2022.2.2_0221_2201.tar.gz
+   #+end_example
+
+   Ensure that there is at least 1 TiB of free space, as the build requires a large amount of storage.
+
+   If you are using an older version of Docker, make sure the [[https://docs.docker.com/build/buildkit/][BuildKit]] backend is enabled.
+
+** Build
+   To build the image, run the following command:
+   #+begin_src bash
+     docker build -t vitis:2022.2.2 -f Dockerfile context
+   #+end_src
+
+** Verify
+   Check the output image:
+   #+begin_src bash
+     docker image ls vitis:2022.2.2
+   #+end_src
+   #+begin_example
+     REPOSITORY   TAG        IMAGE ID       CREATED             SIZE
+     vitis        2022.2.2   448914a8229d   About an hour ago   164GB
+   #+end_example
+
+   Example of running vivado:
+   #+begin_src bash
+     docker run --rm vitis:2022.2.2 vivado -version
+   #+end_src
+   #+begin_example
+     Vivado v2022.2.2 (64-bit)
+     SW Build 3788238 on Tue Feb 21 19:59:23 MST 2023
+     IP Build 3783773 on Tue Feb 21 23:41:56 MST 2023
+     Tool Version Limit: 2022.10
+     Copyright 1986-2023 Xilinx, Inc. All Rights Reserved.
+   #+end_example
+
+   Example of running vitis:
+   #+begin_src bash
+     docker run --rm vitis:2022.2.2 vitis -version
+   #+end_src
+   #+begin_example
+     ,****** Xilinx Vitis Development Environment
+     ,****** Vitis v2022.2.2 (64-bit)
+       ,**** SW Build 3716524 on 2023-02-17-15:43:19
+         ,** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+   #+end_example
