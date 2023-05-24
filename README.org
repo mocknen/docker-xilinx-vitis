@@ -1,0 +1,62 @@
+* Dockerfile Example for Xilinx Vitis 2023.1
+** Prerequisites
+   Required files to build the image are:
+
+   - =Xilinx_Unified_2023.1_0507_1903.tar.gz=
+
+
+   Download the above files from the [[https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/vivado-design-tools/2023-1.html][Xilinx web page]] and save them in a directory named [[./context/][context]].
+
+   After that, the output of the ~ls~ command should look like the following:
+   #+begin_src bash
+     ls context
+   #+end_src
+   #+begin_example
+     Xilinx_Unified_2023.1_0507_1903.tar.gz
+   #+end_example
+
+   Ensure that there is at least 700 GiB of free space, as the build requires a large amount of storage.
+
+   If you are using an older version of Docker, make sure the [[https://docs.docker.com/build/buildkit/][BuildKit]] backend is enabled.
+
+** Build
+   To build the image, run the following command:
+   #+begin_src bash
+     docker build -t vitis:2023.1 -f Dockerfile context
+   #+end_src
+
+** Verify
+   Check the output image:
+   #+begin_src bash
+     docker image ls vitis:2023.1
+   #+end_src
+   #+begin_example
+     REPOSITORY   TAG       IMAGE ID       CREATED       SIZE
+     vitis        2023.1    1b4d26e5d504   8 hours ago   168GB
+   #+end_example
+
+   Example of running ~vivado~:
+   #+begin_src bash
+     docker run --rm vitis:2023.1 vivado -version
+   #+end_src
+   #+begin_example
+     vivado v2023.1 (64-bit)
+     Tool Version Limit: 2023.05
+     SW Build 3865809 on Sun May  7 15:04:56 MDT 2023
+     IP Build 3864474 on Sun May  7 20:36:21 MDT 2023
+     SharedData Build 3865790 on Sun May 07 13:33:03 MDT 2023
+     Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+     Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
+   #+end_example
+
+   Example of running ~vitis~:
+   #+begin_src bash
+     docker run --rm vitis:2023.1 vitis -version
+   #+end_src
+   #+begin_example
+     ,****** Vitis Development Environment
+     ,****** Vitis v2023.1 (64-bit)
+       ,**** SW Build 3860322 on 2023-05-04-06:32:46
+         ,** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+         ,** Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
+   #+end_example
